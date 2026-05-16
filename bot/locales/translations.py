@@ -70,9 +70,9 @@ MESSAGES: Dict[str, Dict[str, str]] = {
         "sv": "⚠️ Användning: svara på meddelandet från användaren för att ta bort tystnaden.",
     },
     "mod_usage_warn": {
-        "ru": "⚠️ Использование: ответьте на сообщение + <code>/warn</code>",
-        "en": "⚠️ Usage: reply to a message + <code>/warn</code>",
-        "sv": "⚠️ Användning: svara på ett meddelande + <code>/warn</code>",
+        "ru": "⚠️ Использование: ответьте на сообщение + /warn",
+        "en": "⚠️ Usage: reply to a message + /warn",
+        "sv": "⚠️ Användning: svara på ett meddelande + /warn",
     },
     "stats_personal_header": {
         "ru": "📊 <b>Статистика пользователя {username}:</b>",

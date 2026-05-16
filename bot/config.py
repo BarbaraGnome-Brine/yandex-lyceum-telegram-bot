@@ -3,19 +3,22 @@ from typing import List, Optional
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_IDS = os.getenv("ADMIN_IDS", "")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 DATA_DIR = os.path.join(BASE_DIR, "data")
+DATABASE_PATH = os.path.join(DATA_DIR, "bot_stats.db")
 
 
 @dataclass
 ### Database settings
 class DatabaseSettings:
-	path: str = "data/bot_stats.db"
+	path: str
 
 
 @dataclass
@@ -178,7 +181,7 @@ def load_settings() -> Settings:
 
 	bot_name = os.getenv("BOT_NAME", "MonitoringBot")
 
-	db_path = os.getenv("DATABASE_PATH", "data/bot_stats.db")
+	db_path = os.getenv("DATABASE_PATH", os.path.join(DATA_DIR, "bot_stats.db"))
 	database = DatabaseSettings(path=db_path)
 
 	collection_interval = parse_int(os.getenv("COLLECTION_INTERVAL", "60"), "COLLECTION_INTERVAL")

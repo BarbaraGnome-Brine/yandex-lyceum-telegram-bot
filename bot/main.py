@@ -17,42 +17,44 @@ logger = logging.getLogger(__name__)
 
 
 async def trigger_digest_job(context):
-    await send_daily_digest(context.bot)
+	await send_daily_digest(context.bot)
 
 
 def register_handlers(application):
-    for handler in get_start_handlers():
-        application.add_handler(handler)
-    for handler in get_language_handlers():
-        application.add_handler(handler)
+	for handler in get_start_handlers():
+		application.add_handler(handler)
+	for handler in get_language_handlers():
+		application.add_handler(handler)
 
-    application.add_handler(get_help_handler())
-    application.add_handler(get_digest_handler())
-    application.add_handler(get_settings_handler())
+	application.add_handler(get_help_handler())
+	application.add_handler(get_digest_handler())
+	application.add_handler(get_settings_handler())
 
-    for handler in get_group_handlers():
-        application.add_handler(handler)
+	for handler in get_group_handlers():
+		application.add_handler(handler)
 
-    application.add_handler(get_stats_handler())
+	application.add_handler(get_stats_handler())
 
-    try:
-        from bot.handlers.message_handler import get_handler as get_message_handler
-        application.add_handler(get_message_handler())
-    except:
-        logger.warning("message_handler.py skipped.")
+	try:
+		from bot.handlers.message_handler import get_handler as get_message_handler
+		application.add_handler(get_message_handler())
+	except Exception as e:
+		logger.exception(f"Критическая ошибка при загрузке message_handler: {e}")
+
 
 if __name__ == '__main__':
-    database.init_db()
-    application = ApplicationBuilder().token(settings.bot_token).build()
-    if settings.notifications.digest_enabled:
-        digest_time = datetime.time(hour=settings.notifications.digest_time, minute=0, second=0)
-        application.job_queue.run_daily(
-            trigger_digest_job,
-            time=digest_time,
-            name="daily_digest"
-        )
-        logger.info(f"Daily digest scheduled for {digest_time} server time.")
+	logger.info(f"Реальный путь к базе данных: {settings.database.path}")
+	database.init_db()
+	application = ApplicationBuilder().token(settings.bot_token).build()
+	if settings.notifications.digest_enabled:
+		digest_time = datetime.time(hour=settings.notifications.digest_time, minute=0, second=0)
+		application.job_queue.run_daily(
+			trigger_digest_job,
+			time=digest_time,
+			name="daily_digest"
+		)
+		logger.info(f"Daily digest scheduled for {digest_time} server time.")
 
-    register_handlers(application)
-    print("Bot is running...")
-    application.run_polling()
+	register_handlers(application)
+	print("Bot is running...")
+	application.run_polling()

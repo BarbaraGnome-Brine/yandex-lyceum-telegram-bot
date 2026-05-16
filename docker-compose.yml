@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     environment:
-      - PYTHONPATH=/app
+      - DATABASE_PATH=/app/data/bot_stats.db
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
