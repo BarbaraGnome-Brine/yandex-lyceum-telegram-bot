@@ -1,13 +1,16 @@
-# Initialize group_ids list if not exists
-if 'group_ids' not in context.bot_data:
-    context.bot_data['group_ids'] = set()
+from datetime import datetime
+from bot.database import get_db_connection
 
-# When bot joins a new group, add it
-def track_groups(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.my_chat_member:
-        chat = update.my_chat_member.chat
-        if chat.type in ['group', 'supergroup']:
-            if update.my_chat_member.new_chat_member.status in ['administrator', 'member']:
-                context.bot_data.setdefault('group_ids', set()).add(chat.id)
-            elif update.my_chat_member.new_chat_member.status == 'left':
-                context.bot_data.get('group_ids', set()).discard(chat.id)
+
+def log_update(user_id: int, chat_id: int, is_command: bool):
+	conn = get_db_connection()
+	c = conn.cursor()
+	timestamp = datetime.now().isoformat()
+
+	c.execute("""
+        INSERT INTO updates (timestamp, user_id, chat_id, is_command)
+        VALUES (?, ?, ?, ?)
+    """, (timestamp, user_id, chat_id, int(is_command)))
+
+	conn.commit()
+	conn.close()

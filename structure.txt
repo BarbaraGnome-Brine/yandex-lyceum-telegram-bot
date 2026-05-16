@@ -1,0 +1,38 @@
+yandex-lyceum-telegram-bot/
+├── bot/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config.py
+│   ├── database.py
+│   ├── handlers/
+│   │   ├── __init__.py
+│   │   ├── start.py
+│   │   ├── stats.py
+│   │   ├── settings.py
+│   │   ├── help.py
+│   │   └── digest.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── collector.py
+│   │   ├── analyzer.py
+│   │   ├── digest_builder.py
+│   │   └── notification.py
+│   └── models/
+│       ├── __init__.py
+│       └── stat.py
+├── logs/
+├── data/
+│   ├── bot_stats.db
+├── tests/
+│   ├── __init__.py
+│   └── test_collector.py
+├── .env
+├── .gitignore
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── .github/
+│   └── workflows/
+│       └── lint.yml
+├── Makefile
+└── README.md

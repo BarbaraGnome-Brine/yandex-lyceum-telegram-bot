@@ -1,0 +1,12 @@
+services:
+  bot:
+    build: .
+    container_name: yandex_lyceum_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
