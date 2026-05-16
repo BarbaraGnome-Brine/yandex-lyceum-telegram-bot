@@ -89,7 +89,13 @@ async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     last_active = user_stats["last_active"]
     if last_active:
-        parts.append(get_text("stats_last_active", lang, datetime=last_active))
+        try:
+            ts = float(last_active)
+            formatted_date = datetime.fromtimestamp(ts).strftime("%d.%m.%Y %H:%M")
+        except (ValueError, TypeError):
+            formatted_date = str(last_active)
+
+        parts.append(get_text("stats_last_active", lang, datetime=formatted_date))
     else:
         parts.append(get_text("stats_no_activity", lang))
 
